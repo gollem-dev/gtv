@@ -129,15 +129,18 @@ func (s *server) start(ctx context.Context) error {
 	return nil
 }
 
+// openBrowser opens url in the user's default browser. url is always the
+// server's own local listen address ("http://" + listener.Addr()), never
+// attacker-controlled input, so the G204 subprocess warnings are not exploitable.
 func openBrowser(url string) {
 	var cmd *exec.Cmd
 	switch runtime.GOOS {
 	case "darwin":
-		cmd = exec.Command("open", url)
+		cmd = exec.Command("open", url) // #nosec G204 -- url is the local server address, not user input
 	case "linux":
-		cmd = exec.Command("xdg-open", url)
+		cmd = exec.Command("xdg-open", url) // #nosec G204 -- url is the local server address, not user input
 	case "windows":
-		cmd = exec.Command("cmd", "/c", "start", url)
+		cmd = exec.Command("cmd", "/c", "start", url) // #nosec G204 -- url is the local server address, not user input
 	default:
 		return
 	}

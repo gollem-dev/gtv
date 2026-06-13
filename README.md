@@ -2,6 +2,10 @@
 
 **Gollem Trace Viewer** — a local web UI for browsing [gollem](https://github.com/gollem-dev/gollem) trace files.
 
+<p align="center">
+  <img width="860" src="./docs/images/trace-viewer.png" />
+</p>
+
 `gtv` starts an HTTP server that serves a single-page web app (embedded in the binary) and exposes a small JSON API over a trace source. Traces can be read from a local directory or from a Google Cloud Storage bucket.
 
 ## Install

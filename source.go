@@ -66,6 +66,13 @@ func cleanRelativePath(path string) (string, error) {
 	if strings.Contains(path, "\\") {
 		return "", goerr.New("path must not contain backslashes", goerr.Value("path", path))
 	}
+	// Reject control characters (newlines, etc.) so the path can never carry a
+	// log-injection payload or other terminal control sequences when echoed.
+	for _, r := range path {
+		if r < 0x20 || r == 0x7f {
+			return "", goerr.New("path must not contain control characters", goerr.Value("path", path))
+		}
+	}
 	// Trim a single trailing slash for convenience but reject if it doubles up.
 	trimmed := strings.TrimSuffix(path, "/")
 	if strings.HasSuffix(trimmed, "/") {

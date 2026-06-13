@@ -183,4 +183,14 @@ func TestCleanRelativePath(t *testing.T) {
 		_, err := main.CleanRelativePath("foo//bar")
 		gt.Error(t, err)
 	})
+
+	t.Run("newline control character rejected", func(t *testing.T) {
+		_, err := main.CleanRelativePath("foo\nbar")
+		gt.Error(t, err)
+	})
+
+	t.Run("carriage return control character rejected", func(t *testing.T) {
+		_, err := main.CleanRelativePath("foo\rbar")
+		gt.Error(t, err)
+	})
 }
